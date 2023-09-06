@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Calculator</title>
+    <title>Document</title>
 </head>
 <link rel="stylesheet" href="/bootstrap-5.2.1-dist/css/bootstrap.css">
 <link rel="stylesheet" href="/bootstrap-5.2.1-dist/css/bootstrap.min.css">
@@ -46,6 +46,20 @@
             opacity: 1;
 
         }
+        #songPlay{
+            background-color: #18395C;
+            color: white;
+            /* height: 100px; */
+            border: 2px solid #18395C;
+
+            font-size: 1rem;
+            font-weight:600;
+            border-radius: 5px;
+            width: 40%;
+            display: block;
+            padding: 8px;
+            opacity: 1;
+        }
         #calBtn:hover{
             transition-duration: 0.5s;
             border: 2px solid #18395C;
@@ -86,8 +100,8 @@
             width: 100%;
         }
         .img{
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
         }
 
@@ -110,8 +124,7 @@
         }
         .container{
             display: block;
-        }
-            .img{
+        }.img{
             display: none;
         }
         }
@@ -119,8 +132,8 @@
     <center>
         <div class="resp">
             <h1 style="color: white;">Love Calculator</h1>
+            <button id="songPlay">Listen to song while playing</button>
             <div class="container">
-
                 <div class="cont-ele">
                     <input type="file" class="img">
                     <input type="" id="lover1" placeholder="Player 1😎😘">
@@ -143,6 +156,13 @@
 
 
     <script>
+        // AUDIOS
+        let bgAudio = new Audio("yt1s.com - Lewis Capaldi  Someone You Loved.mp4")
+        let audio1 = new Audio ("wahha-yanga-ripi-a-raja-bip-gonog-104758.mp3")
+        let audio2 = new Audio ("voice1-79860.mp3");
+
+        
+        // VARIABLES
         let lover1 = document.querySelector("#lover1");
         let lover2 = document.querySelector("#lover2");
         let dispResult = document.querySelector("#resultDisp");
@@ -150,32 +170,33 @@
         let compatibility = document.querySelector("#compatibility");
         let percentage = document.querySelector("#percentage");
         let comment = document.querySelector("#comment");
-        let files = document.querySelectorAll('.img');
+
 
         calBtn.addEventListener("click", giveRandom);
         
-        files.addEventListener("input", loader)
-        function loader(){
-            let image = document.createElement("img");
-            let files = document.querySelectorAll('.img');
-            image.src = files.file
-        }
+       
+       
         function giveRandom() {
         let randNum = Math.round(Math.random()*100);
+        localStorage.setItem('one', JSON.stringify([{lover1: lover1.value},{lover2: lover2.value},{percentage: randNum +"%"}]));
         
 
             if (lover1.value == '' || lover2.value == '') {
                 compatibility.textContent = 'Enter the names of the lovers';
                 percentage.textContent = "0%"
                 comment.textContent = 'Enter the names of the lovers'
+                
             }
             else if (lover1.value == 'Richard' && lover2.value == 'Grace') {
                 // percentage.textContent = randNum +'%';
                 percentage.textContent = '100%';
                 compatibility.textContent = "You are compatible";
                 comment.textContent = "You will be together till the end of time!!"
+                localStorage.setItem('one', JSON.stringify([{lover1: lover1.value},{lover2: lover2.value},{percentage: percentage.textContent}]));
+
                 lover1.value = '';
                 lover2.value = '';
+                
             }
             else if (lover1.value == 'Victor' && lover2.value == 'Dorcas') {
                 // percentage.textContent = randNum +'%';
@@ -194,17 +215,20 @@
                 lover2.value = '';
             }
             
+            
             else{
                 percentage.textContent = randNum +'%';
                 if (randNum < 50) {
                     compatibility.textContent = 'NOT COMPATIBLE';
                     comment.textContent = 'Dont even try'
+                    audio1.play()
                     lover1.value = '';
                     lover2.value = '';
                 }
                 else if (randNum >= 50 && randNum <= 70) {
                     compatibility.textContent = 'YOU BOTH ARE COMPATIBLE';
-                    comment.textContent = 'You can try, but try hard'
+                    comment.textContent = 'You can try, but try hard';
+                    audio2.play();
                     lover1.value = '';
                     lover2.value = '';
                 }
@@ -227,72 +251,14 @@
                     lover2.value = '';
                 }
                
-        }
+            }
         
         }
+        document.querySelector("#songPlay").addEventListener("click", function(){
+            bgAudio.play();
+        })
 
-
-
-
-
-
-
-
-
-        // lover1.addEventListener("keyup", able)
-
-        // function able(){
-        //     calBtn.disabled = false
-        // }
-
-        // function giveRandom(){
-        //     let randNum = Math.round(Math.random()*100);
-        //     if (lover1.value != '' && lover2.value != '') {
-        //         percentage.textContent = randNum +'%';
-        //         lover1.value = '';
-        //         lover2.value = '';
-        //     }
-        //     if (randNum < 50 ) {
-        //         compatibility.textContent = "You are not compatible";
-        //         comment.textContent = "Too bad";
-        //         calBtn.disabled = true;
-        //     }
-
-        //     if (randNum >= 50 && randNum <= 70) {
-        //         compatibility.textContent = "You are compatible";
-        //         comment.textContent = "You can try, but try hard!!"
-        //         calBtn.disabled = true;
-        //     }
-        //     if (randNum >= 71 && randNum <= 80) {
-        //         compatibility.textContent = "You are compatible";
-        //         comment.textContent = "Keep her close!!"
-        //         calBtn.disabled = true;
-        //     }
-        //     if (randNum >= 81 && randNum <= 90) {
-        //         compatibility.textContent = "You are compatible";
-        //         comment.textContent = "You were made for each other!!"
-        //         calBtn.disabled = true;
-        //     }
-        //     if (randNum >= 91 && randNum <= 100) {
-        //         compatibility.textContent = "You are compatible";
-        //         comment.textContent = "You will be together till the end of time!!"
-        //         calBtn.disabled = true;
-        //     }
-        //     if (lover1.value == 'Richard' && lover2.value == 'Grace') {
-        //         // percentage.textContent = randNum +'%';
-        //         percentage.textContent = '100%';
-        //         compatibility.textContent = "You are compatible";
-        //         comment.textContent = "You will be together till the end of time!!"
-        //         lover1.value = '';
-        //         lover2.value = '';
-        //     }
-        //     if (lover1.value == '' || lover2.value == ''){
-        //         compatibility.textContent = "Give the names of the lovers";
-        //         comment.textContent = "Give the names of the lovers"
-        //     }
-        // }
-
-        
+ 
 
     </script>
     <script src="/bootstrap-5.2.1-dist/js/bootstrap.js"></script>
