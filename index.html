@@ -103,6 +103,13 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
+            border: 2px solid #1B3746;
+            overflow: hidden;
+        }
+        .img img{
+            width: 100%;
+            height: auto; 
+            display: block;
         }
 
         @media screen and (max-width: 700px){
@@ -135,11 +142,13 @@
             <button id="songPlay">Listen to song while playing</button>
             <div class="container">
                 <div class="cont-ele">
-                    <input type="file" class="img">
+                    <div class="img"></div>
+                    <input type="file" id="choose-file" accept="image/*">
                     <input type="" id="lover1" placeholder="Player 1😎😘">
                 </div>
                 <div class="cont-ele">
-                    <input type="file" class="img">
+                    <div class="img" id="img2"></div>
+                    <input type="file" id="choose-file2" accept="image/*">
                     <input type="text" id="lover2" placeholder="Player 2🥰😍">
                 </div>
 
@@ -148,7 +157,7 @@
 
         <main id="resultDisp">
             <div id="compatibility">COMPATIBILITY</div>
-            <div id="percentage">0%</div>
+            <div id="percentage">Percentage Match</div>
             <div id="comment">COMMENT</div>
         </main>
         </div>
@@ -156,6 +165,47 @@
 
 
     <script>
+        // IMAGES 1
+        const chooseFile = document.querySelector("#choose-file");
+        const previewFile = document.querySelector(".img");
+        // const previewFile2 = document.querySelector("#img2")
+        chooseFile.addEventListener("change", getImgData);
+
+        function getImgData(){
+            const files = chooseFile.files[0];
+            if (files) {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(files);
+                fileReader.addEventListener("load", function () {
+                previewFile.style.display = "block";
+                previewFile.innerHTML = '<img src="' + this.result + '" />';
+                });
+            }
+            chooseFile.style.display = "none";
+
+        }
+
+        //IMAGES 2
+        const previewFile2 = document.querySelector("#img2");
+        const chooseFile2 = document.querySelector("#choose-file2");
+        chooseFile2.addEventListener("change", getImgData2);
+
+        function getImgData2(){
+            const files = chooseFile2.files[0];
+            if (files) {
+                const fileReader2 = new FileReader();
+                fileReader2.readAsDataURL(files);
+                fileReader2.addEventListener("load", function () {
+                previewFile2.style.display = "block";
+                previewFile2.innerHTML = '<img src="' + this.result + '" />';
+                });
+            }
+            chooseFile2.style.display = "none";
+
+        }
+
+
+
         // AUDIOS
         let bgAudio = new Audio("yt1s.com - Lewis Capaldi  Someone You Loved.mp4")
         let audio1 = new Audio ("wahha-yanga-ripi-a-raja-bip-gonog-104758.mp3")
@@ -179,7 +229,14 @@
         function giveRandom() {
         let randNum = Math.round(Math.random()*100);
         localStorage.setItem('one', JSON.stringify([{lover1: lover1.value},{lover2: lover2.value},{percentage: randNum +"%"}]));
-        
+        if (lover1.value !="" || lover2.value != "") {
+            chooseFile.style.display = "inline";
+            chooseFile2.style.display = "inline";
+            previewFile.innerHTML="";
+            chooseFile.value="";
+            previewFile2.innerHTML="";
+            chooseFile2.innerHTML =""
+        }
 
             if (lover1.value == '' || lover2.value == '') {
                 compatibility.textContent = 'Enter the names of the lovers';
