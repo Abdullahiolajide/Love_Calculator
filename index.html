@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Love Calculator</title>
 </head>
 <link rel="stylesheet" href="/bootstrap-5.2.1-dist/css/bootstrap.css">
 <link rel="stylesheet" href="/bootstrap-5.2.1-dist/css/bootstrap.min.css">
@@ -112,6 +112,7 @@
             display: block;
         }
 
+
         @media screen and (max-width: 700px){
             .resp{
                 display: block;
@@ -133,6 +134,18 @@
             display: block;
         }.img{
             display: none;
+        }
+        #choose-file{
+            display: none;
+        }
+        #choose-file2{
+            display: none;
+        }
+        #compatibility{
+            font-size: 1rem;
+        }
+        #comment{
+            font-size: 1rem;
         }
         }
     </style>
@@ -161,13 +174,22 @@
             <div id="comment">COMMENT</div>
         </main>
         </div>
+        
+            <section style=" backdrop-filter: blur(10px)">
+                <h1 style="color: white;">HISTORY</h1>
+                <section style="margin-bottom: 40PX; color: white;" id="history">Nothing Yet</section>
+                <button id="songPlay" style="margin-bottom: 30px;" class="clearHistory">CLEAR ALL</button>
+            </section>
     </center>
 
 
     <script>
+        
         // IMAGES 1
         const chooseFile = document.querySelector("#choose-file");
         const previewFile = document.querySelector(".img");
+        const history = document.querySelector("#history")
+        const clearHistory = document.querySelector(".clearHistory")
         // const previewFile2 = document.querySelector("#img2")
         chooseFile.addEventListener("change", getImgData);
 
@@ -227,15 +249,46 @@
        
        
         function giveRandom() {
-        let randNum = Math.round(Math.random()*100);
-        localStorage.setItem('one', JSON.stringify([{lover1: lover1.value},{lover2: lover2.value},{percentage: randNum +"%"}]));
+            let randNum = Math.round(Math.random()*100);
+            let arr = [];
+            console.log(arr);
+            let obj = {};
+            arr.push(obj);
+            obj.Mlover = lover1.value;
+            obj.Flover = lover2.value;
+            obj.Bpercent = randNum;
+            console.log(arr)
+        
+        for (let i = 0; i < arr.length; i++) {
+            history.innerHTML += 
+        `<main style="display: flex;">
+             <div style="color: white; font-size: 22px; padding: auto; width: 33.3%; border: 1px solid #18395C;">${arr[i].Mlover}</div>
+             <div style="color: white; font-size: 22px; padding: auto; width: 33.3%; border: 1px solid #18395C;">${arr[i].Flover}</div>
+             <div style="color: white; font-size: 22px; padding: auto; width: 33.3%; border: 1px solid #18395C;">${arr[i].Bpercent}%</div>
+        </main>`;
+            arr = [];
+            localStorage.loverValues = JSON.stringify(history.innerHTML);
+        }
+
+        
+        //localStorage.setItem('two', history);                     
+        //localStorage.setItem('one', JSON.stringify([{lover1: lover1.value,lover2: lover2.value,percentage: randNum +"%"}]));
         if (lover1.value !="" || lover2.value != "") {
             chooseFile.style.display = "inline";
             chooseFile2.style.display = "inline";
             previewFile.innerHTML="";
-            chooseFile.value="";
             previewFile2.innerHTML="";
-            chooseFile2.innerHTML =""
+            if (window.innerWidth > 700) {
+                chooseFile.value="";
+            chooseFile2.innerHTML ="";
+        }else{
+            chooseFile.style.display = "none"
+            chooseFile2.style.display = "none"
+            chooseFile.style.display = "none"
+        }
+            
+            
+            
         }
 
             if (lover1.value == '' || lover2.value == '') {
@@ -311,11 +364,24 @@
             }
         
         }
+        
         document.querySelector("#songPlay").addEventListener("click", function(){
             bgAudio.play();
         })
 
- 
+        //     document.addEventListener("DOMContentLoaded", function(){
+        //  history.innerHTML = localStorage.getItem("two")
+        //     // alert("YOU")
+        // })
+
+        
+        history.innerHTML += JSON.parse(localStorage.loverValues);
+        clearHistory.addEventListener("click", function(){
+            if (confirm("Are you sure")) {
+                localStorage.loverValues = "";
+                history.innerHTML = ""
+            }
+        })
 
     </script>
     <script src="/bootstrap-5.2.1-dist/js/bootstrap.js"></script>
